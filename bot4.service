@@ -1,0 +1,15 @@
+[Unit]
+Description=Mamurbek
+After=network.target
+
+[Service]
+EnvironmentFile=/etc/environment
+ExecStart=/root/bot4/env/bin/python main.py
+ExecReload=/root/bot4/env/bin/python main.py
+WorkingDirectory=/root/bot4/
+KillMode=process
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

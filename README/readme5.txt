@@ -1,0 +1,1 @@
+TEXT	Дата в формате "YYYY-MM-DD HH:MM:SS.SSS"

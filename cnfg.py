@@ -1,4 +1,0 @@
-TOKEN='7965609174:AAHR_SnRy-FRVFWWbNt00tmuoPeNkhqfEZM'
-DBASE = 'db/mydbase.db'
-ADMIN = 139204666
-# 7554643826 Ma'murbek started

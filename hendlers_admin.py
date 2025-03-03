@@ -21,7 +21,7 @@ async def setts(message: Message):
         report = int(ms[3])
 
         tup = (iduser,vvod,report,idadm,)
-        if idadm==ADMIN:
+        if message.from_user.id==ADMIN:
             try:
                 async with DbaseBot(DBASE) as db:
                     st = 'UPDATE users SET operid==?, vvod==?,report==? WHERE telegid==?'

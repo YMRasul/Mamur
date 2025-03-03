@@ -4,7 +4,7 @@ import logging
 from aiogram import Bot, Dispatcher
 from config import TOKEN
 
-from hendler_echo import routerEcho
+from hendler_echo import get_routerEcho
 from hendlers_start import get_router
 from hendlers_admin import routerAdmin
 from hendlers_user import get_routerUser
@@ -39,6 +39,7 @@ async def main():                       # Запуск процесса полл
     routerUser = get_routerUser(bot)
     dp.include_router(routerUser)       # 4. User hendler
 
+    routerEcho = get_routerEcho(bot)
     dp.include_router(routerEcho)       # *. Echo hendler
 
     dp.startup.register(on_startup)    # регистрация функцию  on_startup()

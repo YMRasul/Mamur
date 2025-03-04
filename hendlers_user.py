@@ -66,7 +66,40 @@ def get_routerUser(bot):
                 else:
                     await message.answer(f' {x[1]} строка не может быть преобразована во float')
             else:
-                await message.answer(f"Komanda app sizga mumkin emas.")
+                await message.answer(f"Komanda ins sizga mumkin emas.")
+
+    @routerUser.message(F.text.lower().startswith("upd")) # Добавление записи
+    async def updrecord(message: Message):
+        s = message.text
+        n = len(s)
+        i = 0
+        while i < n:
+            if s[i] == ' ':
+                break
+            else:
+                i = i + 1
+        if (i == n):
+            await message.answer("Noto'g'ri komanda")
+            return
+        ss = s[i:].strip()
+        ms = [i.strip() for i in ss.split(',')]
+        id = message.from_user.id
+        async with DbaseBot(DBASE) as db:
+            s = "SELECT operid,vvod FROM users WHERE telegid = ?"
+            cur = await db.fetch_one(s, (id,)) # Получаем настройки для id
+            if cur[1]==1: # Если имеет право на изменение cur[0]
+                #upd idrecord,text
+                tup = (ms[1],ms[0],)
+                try:
+                    st = 'UPDATE record SET prim==? WHERE id==?'
+                    await db.execute(st, tup)
+                    await message.answer(f'Успешное изменения данных {tup}')
+                    await bot.send_message(ADMIN, f'Updated by {message.from_user.id}: {message.from_user.full_name} {tup}')
+                except:
+                    await message.answer(f'Ошибка при изменения данных {tup=}')
+                    await bot.send_message(ADMIN,f'Ошибка при изменения данных {tup=}')
+            else:
+                await message.answer(f"Komanda update sizga mumkin emas.")
 
     @routerUser.message(F.text.regexp(r"\d{4}-\d{2}-\d{2}"))  # Проверка формата даты YYYY-MM-DD
     async def date_handler(message: Message):

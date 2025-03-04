@@ -10,6 +10,7 @@ routerAdmin = Router()
 # ------------------------------------------------
 @routerAdmin.message((F.from_user.id==ADMIN)&(F.text[0:3]=='set'))
 async def setts(message: Message):
+    id = message.from_user.id
     s = message.text[4:].strip()
     ms = [i.strip() for i in s.split(',')]
 #    tup = (ms[1],ms[2],ms[3],ms[0])
@@ -21,7 +22,7 @@ async def setts(message: Message):
         report = int(ms[3])
 
         tup = (iduser,vvod,report,idadm,)
-        if message.from_user.id==ADMIN:
+        if id==ADMIN:
             try:
                 async with DbaseBot(DBASE) as db:
                     st = 'UPDATE users SET operid==?, vvod==?,report==? WHERE telegid==?'

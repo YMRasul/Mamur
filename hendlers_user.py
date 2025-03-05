@@ -101,16 +101,13 @@ def get_routerUser(bot):
             else:
                 await message.answer(f"Komanda update sizga mumkin emas.")
 
-    @routerUser.message(F.text.regexp(r"\d{4}-\d{2}-\d{2}"))  # Проверка формата даты YYYY-MM-DD
-    async def date_handler(message: Message):
-        await message.answer("Вы отправили дату!")
-
     return routerUser
 
 # Переводим во float и всегда отрицательное число (расход)
 def tofloat(z,idp):
     try:
         x = float(z)
+#        print(f"{x=} {z=}")
         if idp !=ADMIN:
             x = -abs(x)
         return (True,x)

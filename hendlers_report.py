@@ -189,9 +189,9 @@ async def rep(ms0,ms1,message):
 
                 s = f'Qoldiq: {os1:.2f}\n'
                 for row in rec:
-                    s = s + f'{row[0]:4.0f}:{row[3]},{row[2]:10.2f},{row[4]}\n'
+                    s = s + f'\n{row[0]}:{row[3]}\n{row[2]:10.2f}\n{row[4]}\n'
 
-                s = s + f'Prihod: {prx:.2f}\n'
+                s = s + f'\nPrihod: {prx:.2f}\n'
                 s = s + f'Rashod: {rsx:.2f}\n'
                 s = s + f'Qoldiq: {os2:.2f}'
 

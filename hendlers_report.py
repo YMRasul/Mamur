@@ -41,11 +41,14 @@ async def how_are_you(message: Message):
 async def RepTekDay(message: Message):
     year = datetime.today().year
     mont = datetime.today().month
+    day = datetime.today().day
 
-    if mont<10:
-        dt1 = f'{year}-0{mont}-01 00:00'
-    else:
-        dt1 = f'{year}-{mont}-01 00:00'
+    if day<10:
+        day = f'0{day}'
+    if mont < 10:
+        mont = f'0{mont}'
+
+    dt1 = f'{year}-{mont}-{day} 00:00'
 
     today = datetime.today().strftime('%Y-%m-%d')
     dt2 = today + ' 23:59'

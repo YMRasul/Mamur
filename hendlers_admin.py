@@ -1,13 +1,20 @@
+import os
 from aiogram import Router,F
 from aiogram.types import Message
 from config import ADMIN,DBASE
 from aiogram.filters import Command
-
+from pathlib import Path
+from aiogram.types import FSInputFile
 from dbase import DbaseBot
+
 
 routerAdmin = Router()
 
 # ------------------------------------------------
+def rootpath() -> Path:
+    """Returns project root folder."""
+    return str(Path(__file__).parent)  # Тут выход в корень проекта //TODO выход в корень проекта
+# ---------------------------------------
 @routerAdmin.message((F.from_user.id==ADMIN)&(F.text[0:3]=='set'))
 async def setts(message: Message):
     id = message.from_user.id
@@ -52,6 +59,47 @@ async def setts(message: Message):
     else:
         await message.answer(f'Это для {ADMIN}')
 # ---------------------------------------------
+
+@routerAdmin.message(Command('copy'))
+async def copybase(message):
+    file1 = 'mydbase.db'
+    if message.from_user.id == ADMIN:  # superUser
+        path_sep = os.path.sep
+        fil = rootpath() + path_sep + 'db' + path_sep
+        src = fil + file1
+        print(f'{fil=}  {src=}')
+
+        file = FSInputFile(src)              # Загружаем файл
+        await message.answer_document(file)  # Отправляем файл
+# ------------------------------------------------
+
+@routerAdmin.message(Command('ReportAll'))
+async def records(message: Message):
+    file1 = 'records.txt'
+    if message.from_user.id == ADMIN:  # superUser
+        #r = await con.clients()
+        async with DbaseBot(DBASE) as db:
+            ss = "SELECT * FROM record ORDER BY datarecord"
+            r = await db.fetch_all(ss)  # Получаем настройки
+            with open(file1, 'w', encoding="utf-8") as f:
+                i = 0
+                ras=0
+                pri=0
+                for z in r:
+                    i = i + 1
+                    x = 0
+                    if z[2] > 0:
+                        f.write(f"{z[0]} {z[1]} {z[2]:10.2f} {x:10.2f}  {z[3]} {z[4]}\n")
+                        pri = pri + z[2]
+                    else:
+                        f.write(f"{z[0]} {z[1]} {x:10.2f} {z[2]:10.2f} {z[3]} {z[4]}\n")
+                        ras = ras + z[2]
+                f.write(f"Prihod: {pri:10.2f}\n")
+                f.write(f"Rashod: {ras:10.2f}\n")
+        src = rootpath() + os.path.sep + file1
+        document = FSInputFile(src)  # Загружаем файл
+        await message.answer_document(document, caption="Вот ваш текстовый файл 📄")
+# ------------------------------------------
 @routerAdmin.message(F.text=="⚙️ Админ панель")
 async def AdminInsert(message: Message):
     s1 = 'DELETE  FROM record'

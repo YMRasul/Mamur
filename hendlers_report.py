@@ -127,7 +127,29 @@ async def Hisobot1(message: Message):
     ms0 = m1
     ms1 = dt2
     await rep(ms0,ms1,message)
+# --------------------------------------------------------------
+# rep 2025-01-01    (Hisobot от текущей даты назад)
+@routerReport.message(F.text.startswith("-"))
+async def Hisobot_1(message: Message):
+    id = message.from_user.id
+    try:
+        n = int(message.text)
+        m = abs(n)
+        preday = datetime.today() - timedelta(days=m)
 
+        prday = preday.strftime('%Y-%m-%d')
+        dt1 = prday + ' 00:00'
+        dt2 = prday + ' 23:59'
+#        print(f'{dt1=} {dt2=}')
+    except ValueError:
+        await message.answer(f'({message.text}) raqam emas! ')
+        return
+
+    await message.answer(f'Date: {prday}')
+    ms0 = dt1
+    ms1 = dt2
+    await rep(ms0,ms1,message)
+# --------------------------------------------------
 # rpp 2025-01-01 09:15,2025-01-05 14:43   Hisobot за период
 @routerReport.message(F.text.lower().startswith("rpp"))
 async def Hisobot2(message: Message):
@@ -146,12 +168,12 @@ async def Hisobot2(message: Message):
         await message.answer(f"Error!\nKomanda {CMD1} ko'rinishda bo'lishi kerak.")
         return
     await message.answer(f'Date: {dt1} {dt2}')
-
     ms0 = ms[0]
     ms1 = ms[1]
     await rep(ms0,ms1,message)
 # ======================================================================
 async def rep(ms0,ms1,message):
+    #print(f'{ms0=} {ms1=}')
     idp = message.from_user.id
     async with DbaseBot(DBASE) as db:
         s = "SELECT operid,vvod,report,fullname FROM users WHERE telegid = ?"

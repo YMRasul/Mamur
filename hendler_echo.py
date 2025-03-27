@@ -19,6 +19,7 @@ def get_routerEcho(bot):
         s = s + "'ins sum,datatime,text'  insert record\n"
         s = s + "'del IdRecord'  delete record\n"
         s = s + "'upd IdRecord,Text'  O'zgartirish\n"
+        s = s + "/copy-получить БД\n"
         if message.from_user.id==ADMIN:
             s = s + "'set 139204666,6003890947, 1, 1'\n(set idadmin,iduser,vvod,report)\n"
             s = s + "'/sets' - Настройки"
